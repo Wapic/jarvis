@@ -49,7 +49,7 @@ public class JarvisContainer extends Jarvis {
 
     @Override
     public @NotNull JarvisHudEditor getHudEditor(@Nullable Screen lastScreen, @NotNull List<@NotNull JarvisHud> hudList) {
-        return new JarvisHudEditor(lastScreen, hudList);
+        return new JarvisHudEditor(lastScreen, hudList, this);
     }
 
     @Override

@@ -42,4 +42,12 @@ public interface JarvisPlugin {
 
     default void onInitialize(@NotNull Jarvis jarvis) {
     }
+
+    /**
+     * Called when a Hud Editor instance is closed.
+     * Useful for saving to file.
+     */
+    default void onHudEditorClosed() {
+
+    }
 }

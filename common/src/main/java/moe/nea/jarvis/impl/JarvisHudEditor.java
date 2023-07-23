@@ -1,8 +1,6 @@
 package moe.nea.jarvis.impl;
 
-import moe.nea.jarvis.api.JarvisAnchor;
-import moe.nea.jarvis.api.JarvisHud;
-import moe.nea.jarvis.api.JarvisScalable;
+import moe.nea.jarvis.api.*;
 import moe.nea.jarvis.api.Point;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -28,11 +26,13 @@ public class JarvisHudEditor extends Screen {
     private Point grabbedHudCoordOffset;
     private Point oppositeCorner;
     private double scalePerDistance;
+    private final JarvisContainer container;
 
-    public JarvisHudEditor(Screen lastScreen, List<JarvisHud> huds) {
+    public JarvisHudEditor(Screen lastScreen, List<JarvisHud> huds, JarvisContainer container) {
         super(Text.translatable("jarvis.editor"));
         this.lastScreen = lastScreen;
         this.huds = huds;
+        this.container = container;
         for (JarvisHud hud : huds) {
             hoverProgress.put(hud, new BinaryInterpolator(200));
         }
@@ -145,6 +145,7 @@ public class JarvisHudEditor extends Screen {
     @Override
     public void close() {
         client.setScreen(lastScreen);
+        container.getAllPlugins().forEach(JarvisPlugin::onHudEditorClosed);
     }
 
     public void tryGrabOverlay(double mouseX, double mouseY) {
