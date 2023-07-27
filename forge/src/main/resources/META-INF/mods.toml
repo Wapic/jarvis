@@ -16,13 +16,13 @@ Common Config Index for Minecraft mods
 [[dependencies.jarviscci]]
 modId = "forge"
 mandatory = true
-versionRange = "[47,)"
+versionRange = "[46,)"
 ordering = "NONE"
 side = "BOTH"
 
 [[dependencies.jarviscci]]
 modId = "minecraft"
 mandatory = true
-versionRange = "[1.20.1,)"
+versionRange = "[1.20,)"
 ordering = "NONE"
 side = "BOTH"
