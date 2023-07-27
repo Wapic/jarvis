@@ -8,7 +8,11 @@ import moe.nea.jarvis.impl.LoaderSupport;
 import moe.nea.jarvis.impl.test.TestPluginClass;
 import net.minecraft.text.Text;
 import net.minecraftforge.client.event.RegisterClientCommandsEvent;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.Event;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLLoadCompleteEvent;
@@ -37,8 +41,22 @@ public class Main {
             FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onDequeue);
             FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onEnqueue);
             FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onComplete);
-            MinecraftForge.EVENT_BUS.addListener(this::onRegisterCommands);
+            FMLJavaModLoadingContext.get().getModEventBus().addListener(this::onRegisterKeyBindings);
+            MinecraftForge.EVENT_BUS.register(this);
         }
+    }
+
+    @SubscribeEvent
+    public void onClientTick(TickEvent.ClientTickEvent event) {
+        if (event.phase == TickEvent.Phase.END) {
+            while (jarvisContainer.hudKeyBinding.wasPressed()) {
+                jarvisContainer.hudKeyBindingPressed();
+            }
+        }
+    }
+
+    public void onRegisterKeyBindings(RegisterKeyMappingsEvent event) {
+        event.register(jarvisContainer.hudKeyBinding);
     }
 
     public void onEnqueue(InterModEnqueueEvent event) {
@@ -46,6 +64,7 @@ public class Main {
             InterModComms.sendTo(JarvisConstants.MODID, JarvisConstants.IMC_REGISTER_PLUGIN, () -> TestPluginClass.class);
     }
 
+    @SubscribeEvent
     public void onRegisterCommands(RegisterClientCommandsEvent event) {
         jarvisContainer.registerCommands(event.getDispatcher());
     }

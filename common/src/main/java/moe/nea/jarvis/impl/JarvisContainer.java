@@ -7,9 +7,12 @@ import moe.nea.jarvis.api.JarvisHud;
 import moe.nea.jarvis.api.JarvisPlugin;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,6 +23,7 @@ import java.util.stream.Stream;
 public class JarvisContainer extends Jarvis {
     public List<JarvisPlugin> plugins = new ArrayList<>();
     public LoaderSupport loaderSupport;
+    public KeyBinding hudKeyBinding = new KeyBinding("key.jarvis.open-gui-editor", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_SHIFT, "key.jarvis");
 
     public LoaderSupport getLoaderSupport() {
         return loaderSupport;
@@ -76,7 +80,7 @@ public class JarvisContainer extends Jarvis {
                         .executes(context -> {
                             MinecraftClient.getInstance().send(() -> MinecraftClient.getInstance().setScreen(
                                     new JarvisConfigSearch(this, null, getAllPlugins().flatMap(it -> it.getAllConfigOptions().stream()
-                                            .map(opt -> new ConfigOptionWithCustody(it, opt))).collect(Collectors.toList()))));
+                                        .map(opt -> new ConfigOptionWithCustody(it, opt))).collect(Collectors.toList()))));
                             return 0;
                         })));
     }
@@ -85,5 +89,9 @@ public class JarvisContainer extends Jarvis {
         Text name = plugin.getName();
         if (name != null) return name;
         return loaderSupport.getModName(plugin.getModId()).get();
+    }
+
+    public void hudKeyBindingPressed() {
+        MinecraftClient.getInstance().send(() -> MinecraftClient.getInstance().setScreen(this.getHudEditor(null)));
     }
 }

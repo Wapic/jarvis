@@ -1,4 +1,6 @@
 {
   "jarvis.editor.title": "HUD Editor (Powered by Jarvis)",
-  "jarvis.editor.scaleBlurb": "Tip: Right click and drag to scale."
+  "jarvis.editor.scaleBlurb": "Tip: Right click and drag to scale.",
+  "key.jarvis": "Jarvis",
+  "key.jarvis.open-gui-editor": "Open HUD Editor"
 }

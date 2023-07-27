@@ -7,8 +7,13 @@ import moe.nea.jarvis.impl.LoaderSupport;
 import moe.nea.jarvis.impl.test.TestPluginClass;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
+import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
+import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,6 +30,12 @@ public class Main implements ClientModInitializer {
             }
         });
         container.plugins.addAll(jarvisPlugins);
+        var hudKeybind = KeyBindingHelper.registerKeyBinding(container.hudKeyBinding);
+        ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            while (hudKeybind.wasPressed()) {
+                container.hudKeyBindingPressed();
+            }
+        });
         if (!JarvisUtil.isTest)
             container.plugins.removeIf(it -> it instanceof TestPluginClass);
         container.finishLoading();
