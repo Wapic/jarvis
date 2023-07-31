@@ -103,6 +103,7 @@ subprojects {
                                 email.set("nea+jarvis@nea.moe")
                             }
                         }
+                        name.set("Jarivs Common Config Interface")
                         description.set("Jarvis Common Config Interface is a search engine and hud editor allowing you to edit all your minecraft mods config options and HUDs in one place")
                         inceptionYear.set("2023")
                         issueManagement {
