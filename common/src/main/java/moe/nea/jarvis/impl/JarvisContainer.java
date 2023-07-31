@@ -46,9 +46,13 @@ public class JarvisContainer extends Jarvis {
         return plugins.stream().flatMap(it -> it.getAllHuds().stream());
     }
 
+    public @NotNull Stream<@NotNull JarvisHud> getAllEnabledHuds() {
+        return getAllHuds().filter(JarvisHud::isEnabled);
+    }
+
     @Override
     public @NotNull JarvisHudEditor getHudEditor(@Nullable Screen lastScreen) {
-        return getHudEditor(lastScreen, getAllHuds());
+        return getHudEditor(lastScreen, getAllEnabledHuds());
     }
 
     @Override

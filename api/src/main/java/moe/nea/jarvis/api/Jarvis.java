@@ -24,7 +24,7 @@ public abstract class Jarvis {
 
     /**
      * Get a HUD editor screen. You need to manually tell minecraft to display this screen. By default, displays all HUDs
-     * according to {@link #getAllHuds()}
+     * according to {@link #getAllHuds()}, that are currently {@link JarvisHud#isEnabled() enabled}.
      *
      * @param lastScreen the screen to return to once the screen is closed.
      */

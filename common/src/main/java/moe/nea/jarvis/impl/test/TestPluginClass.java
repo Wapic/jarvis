@@ -68,6 +68,11 @@ public class TestPluginClass implements JarvisPlugin {
         public int getHeight() {
             return 300;
         }
+
+        @Override
+        public boolean isEnabled() {
+            return true;
+        }
     };
 
     JarvisConfigOption ofOption(String title, String... description) {

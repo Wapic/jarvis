@@ -11,6 +11,25 @@ import org.jetbrains.annotations.NotNull;
  */
 public interface JarvisHud {
     /**
+     * Check if this hud is enabled / turned on. It might still not render, since it is scoped to certain areas,
+     * or only visible while doing certain actions.
+     *
+     * @return if this hud is currently enabled
+     * @see #isActive()
+     */
+    default boolean isEnabled() {
+        return true;
+    }
+
+    /**
+     * @return if this hud is enabled and currently rendering
+     * @see #isEnabled()
+     */
+    default boolean isActive() {
+        return isEnabled();
+    }
+
+    /**
      * @return the current x position of this hud elements {@link #getAnchor anchor}, as a percentage of the {@link Window#getScaledWidth()}
      */
     double getX();
