@@ -33,6 +33,7 @@ dependencies {
     common(project(path: ":common", configuration: "namedElements"))
     shadowCommon(project(path: ":common", configuration: "transformProductionForge"))
     shadowCommon(project(path: ":api", configuration: "transformProductionFabric"))
+    compileOnly("net.fabricmc:fabric-loader:0.14.22")
 }
 
 processResources {

@@ -11,7 +11,6 @@ import net.minecraftforge.client.event.RegisterClientCommandsEvent;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.TickEvent;
-import net.minecraftforge.eventbus.api.Event;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.InterModComms;
 import net.minecraftforge.fml.common.Mod;
@@ -24,14 +23,21 @@ import net.minecraftforge.fml.loading.FMLLoader;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
+import java.util.Collections;
+import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 @Mod(JarvisConstants.MODID)
 public class Main {
+    Supplier<Function<String, Optional<Text>>> nameGenerator = () -> ignored -> Optional.empty();
     JarvisContainer jarvisContainer = JarvisContainer.init(new LoaderSupport() {
         @Override
         public Optional<Text> getModName(String modid) {
+            Optional<Text> connectedModId = nameGenerator.get().apply(modid);
+            if (connectedModId.isPresent()) return connectedModId;
             return Optional.of(Text.literal(FMLLoader.getLoadingModList().getModFileById(modid).getMods().stream().findFirst().get().getDisplayName()));
         }
     });
@@ -70,6 +76,13 @@ public class Main {
     }
 
     public void onComplete(FMLLoadCompleteEvent event) {
+        Supplier<Supplier<List<JarvisPlugin>>> plugins = () -> () -> Collections.emptyList();
+        try {
+            Class.forName("net.fabricmc.loader.api.FabricLoader");
+            plugins = () -> ConnectorHook::getConnectedPlugins;nameGenerator = () -> ConnectorHook::getConnectedModName;
+        } catch (ClassNotFoundException e) {
+        }
+        jarvisContainer.plugins.addAll(plugins.get().get());
         jarvisContainer.finishLoading();
     }
 
