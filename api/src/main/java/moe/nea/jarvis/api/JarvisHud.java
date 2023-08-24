@@ -133,7 +133,7 @@ public interface JarvisHud {
     default void applyTransformations(@NotNull MatrixStack matrixStack) {
         matrixStack.translate(getAbsoluteX(), getAbsoluteY(), 0);
         if (this instanceof JarvisScalable scalable) {
-            matrixStack.scale(scalable.getScale(), scalable.getScale(), 0);
+            matrixStack.scale(scalable.getScale(), scalable.getScale(), 1);
         }
     }
 
