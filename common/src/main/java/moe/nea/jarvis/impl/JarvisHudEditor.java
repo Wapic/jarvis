@@ -87,14 +87,14 @@ public class JarvisHudEditor extends Screen {
         float translucentStart = opaquePercentage * height;
         float translucentEnd = height;
         Matrix4f matrix4f = drawContext.getMatrices().peek().getPositionMatrix();
-        vertexConsumer.vertex(matrix4f, 0, 0, 0).color(0x0, 0x0, 0x0, 0x80).next();
-        vertexConsumer.vertex(matrix4f, 0, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80).next();
-        vertexConsumer.vertex(matrix4f, width, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80).next();
-        vertexConsumer.vertex(matrix4f, width, 0, 0).color(0x0, 0x0, 0x0, 0x80).next();
-        vertexConsumer.vertex(matrix4f, 0, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80).next();
-        vertexConsumer.vertex(matrix4f, 0, translucentEnd, 0).color(0x0, 0x0, 0x0, 0).next();
-        vertexConsumer.vertex(matrix4f, width, translucentEnd, 0).color(0x0, 0x0, 0x0, 0).next();
-        vertexConsumer.vertex(matrix4f, width, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80).next();
+        vertexConsumer.vertex(matrix4f, 0, 0, 0).color(0x0, 0x0, 0x0, 0x80);
+        vertexConsumer.vertex(matrix4f, 0, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80);
+        vertexConsumer.vertex(matrix4f, width, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80);
+        vertexConsumer.vertex(matrix4f, width, 0, 0).color(0x0, 0x0, 0x0, 0x80);
+        vertexConsumer.vertex(matrix4f, 0, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80);
+        vertexConsumer.vertex(matrix4f, 0, translucentEnd, 0).color(0x0, 0x0, 0x0, 0);
+        vertexConsumer.vertex(matrix4f, width, translucentEnd, 0).color(0x0, 0x0, 0x0, 0);
+        vertexConsumer.vertex(matrix4f, width, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80);
         drawContext.draw();
     }
 

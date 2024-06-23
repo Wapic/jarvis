@@ -36,7 +36,7 @@ public class JarvisConfigSearch extends Screen {
         super.init();
         searchFieldWidth = Math.min(400, width / 3);
         addDrawableChild(searchField = new TextFieldWidget(client.textRenderer, width / 2 - searchFieldWidth / 2,
-                10, searchFieldWidth, 18, Text.translatable("jarvis.configlist.suggestion")));
+            10, searchFieldWidth, 18, Text.translatable("jarvis.configlist.suggestion")));
         searchField.setText(searchQuery);
     }
 
@@ -55,7 +55,7 @@ public class JarvisConfigSearch extends Screen {
         for (ConfigOptionWithCustody filteredOption : filteredOptions) {
             int height = 15 + filteredOption.option().description().size() * 10;
             if (0 <= mouseX && mouseX < searchFieldWidth &&
-                    0 <= mouseY && mouseY < height) {
+                0 <= mouseY && mouseY < height) {
                 context.fill(0, 0, searchFieldWidth, height, 0x50A0A0A0);
             }
 
@@ -80,13 +80,13 @@ public class JarvisConfigSearch extends Screen {
     }
 
     @Override
-    public boolean mouseScrolled(double mouseX, double mouseY, double amount) {
-        if (super.mouseScrolled(mouseX, mouseY, amount)) {
+    public boolean mouseScrolled(double mouseX, double mouseY, double horizontalAmount, double verticalAmount) {
+        if (super.mouseScrolled(mouseX, mouseY, horizontalAmount, verticalAmount)) {
             return true;
         }
         if (35 <= mouseY && mouseY < height && width / 2 - searchFieldWidth / 2 <= mouseX
-                && mouseX < width / 2 + searchFieldWidth / 2) {
-            scroll(amount);
+            && mouseX < width / 2 + searchFieldWidth / 2) {
+            scroll(verticalAmount);
             return true;
         }
         return false;
@@ -110,7 +110,7 @@ public class JarvisConfigSearch extends Screen {
         for (ConfigOptionWithCustody filteredOption : filteredOptions) {
             int height = 15 + filteredOption.option().description().size() * 10;
             if (0 <= mouseX && mouseX < searchFieldWidth &&
-                    0 <= mouseY && mouseY < height) {
+                0 <= mouseY && mouseY < height) {
                 client.setScreen(filteredOption.option().jumpTo(this));
                 return true;
             }
@@ -154,8 +154,8 @@ public class JarvisConfigSearch extends Screen {
             filter[i] = group;
         }
         filteredOptions = allOptions.stream()
-                .filter(it -> filterOption(it, filter))
-                .collect(Collectors.toList());
+            .filter(it -> filterOption(it, filter))
+            .collect(Collectors.toList());
         scroll(0);
     }
 

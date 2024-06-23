@@ -28,12 +28,12 @@ configurations {
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${rootProject.forge_version}"
+    forge "net.minecraftforge:forge:${rootProject.minecraft_version}-${rootProject.forge_version}"
 
     common(project(path: ":common", configuration: "namedElements"))
     shadowCommon(project(path: ":common", configuration: "transformProductionForge"))
     shadowCommon(project(path: ":api", configuration: "transformProductionFabric"))
-    compileOnly("net.fabricmc:fabric-loader:0.14.22")
+    compileOnly("net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}")
 }
 
 processResources {
