@@ -27,7 +27,7 @@
     "jarvis-common.mixins.json"
   ],
   "depends": {
-    "fabric": "*",
+    ${fabricDeps}
     "minecraft": ">=1.20"
   }
 }

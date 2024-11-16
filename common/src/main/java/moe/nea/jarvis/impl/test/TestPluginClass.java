@@ -91,7 +91,7 @@ public class TestPluginClass implements JarvisPlugin {
             @Override
             public @NotNull Screen jumpTo(@Nullable Screen parentScreen) {
                 assert parentScreen != null;
-                MinecraftClient.getInstance().player.sendMessage(Text.literal("jumpTo invoked: ").append(title));
+                MinecraftClient.getInstance().player.sendMessage(Text.literal("jumpTo invoked: ").append(title), false);
                 return parentScreen;
             }
         };

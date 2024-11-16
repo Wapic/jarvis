@@ -45,7 +45,7 @@ public class JarvisHudEditor extends Screen {
         int absoluteX = hud.getAbsoluteX();
         int absoluteY = hud.getAbsoluteY();
         return absoluteX < mouseX && mouseX < absoluteX + hud.getEffectiveWidth()
-                && absoluteY < mouseY && mouseY < absoluteY + hud.getEffectiveHeight();
+                   && absoluteY < mouseY && mouseY < absoluteY + hud.getEffectiveHeight();
     }
 
     @Override
@@ -53,10 +53,10 @@ public class JarvisHudEditor extends Screen {
         super.render(context, mouseX, mouseY, delta);
         assert client != null;
         context.drawCenteredTextWithShadow(client.textRenderer,
-                Text.translatable("jarvis.editor.title").setStyle(Style.EMPTY.withColor(new Color(100, 200, 255, 255).getRGB())),
-                width / 2, 20, -1);
+                                           Text.translatable("jarvis.editor.title").setStyle(Style.EMPTY.withColor(new Color(100, 200, 255, 255).getRGB())),
+                                           width / 2, 20, -1);
         context.drawCenteredTextWithShadow(client.textRenderer,
-                Text.translatable("jarvis.editor.scaleBlurb").setStyle(Style.EMPTY.withColor(new Color(200, 200, 200, 255).getRGB())), width / 2, 35, -1);
+                                           Text.translatable("jarvis.editor.scaleBlurb").setStyle(Style.EMPTY.withColor(new Color(200, 200, 200, 255).getRGB())), width / 2, 35, -1);
         boolean hasHoveredAny = grabbedHud != null;
         for (JarvisHud hud : huds) {
             context.getMatrices().push();
@@ -71,7 +71,7 @@ public class JarvisHudEditor extends Screen {
             hoverInterpolator.lerpTo(hovered ? 1 : 0);
             fillFadeOut(context, hud.getWidth(), hud.getHeight(), hud.getFadeOutPercentage());
             context.drawBorder(0, 0, hud.getWidth(), hud.getHeight(),
-                    hoverInterpolator.lerp(new Color(0xFF343738, true), new Color(0xFF85858A, true)).getRGB()
+                               hoverInterpolator.lerp(new Color(0xFF343738, true), new Color(0xFF85858A, true)).getRGB()
             );
             context.drawCenteredTextWithShadow(client.textRenderer, hud.getLabel(), hud.getWidth() / 2, hud.getHeight() / 2, -1);
             context.getMatrices().pop();
@@ -83,19 +83,20 @@ public class JarvisHudEditor extends Screen {
             drawContext.fill(0, 0, width, height, 0x80000000);
             return;
         }
-        VertexConsumer vertexConsumer = drawContext.getVertexConsumers().getBuffer(RenderLayer.getGui());
-        float translucentStart = opaquePercentage * height;
-        float translucentEnd = height;
-        Matrix4f matrix4f = drawContext.getMatrices().peek().getPositionMatrix();
-        vertexConsumer.vertex(matrix4f, 0, 0, 0).color(0x0, 0x0, 0x0, 0x80);
-        vertexConsumer.vertex(matrix4f, 0, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80);
-        vertexConsumer.vertex(matrix4f, width, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80);
-        vertexConsumer.vertex(matrix4f, width, 0, 0).color(0x0, 0x0, 0x0, 0x80);
-        vertexConsumer.vertex(matrix4f, 0, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80);
-        vertexConsumer.vertex(matrix4f, 0, translucentEnd, 0).color(0x0, 0x0, 0x0, 0);
-        vertexConsumer.vertex(matrix4f, width, translucentEnd, 0).color(0x0, 0x0, 0x0, 0);
-        vertexConsumer.vertex(matrix4f, width, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80);
-        drawContext.draw();
+        drawContext.draw(vertexConsumerProvider -> {
+            VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.getGui());
+            float translucentStart = opaquePercentage * height;
+            float translucentEnd = height;
+            Matrix4f matrix4f = drawContext.getMatrices().peek().getPositionMatrix();
+            vertexConsumer.vertex(matrix4f, 0, 0, 0).color(0x0, 0x0, 0x0, 0x80);
+            vertexConsumer.vertex(matrix4f, 0, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80);
+            vertexConsumer.vertex(matrix4f, width, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80);
+            vertexConsumer.vertex(matrix4f, width, 0, 0).color(0x0, 0x0, 0x0, 0x80);
+            vertexConsumer.vertex(matrix4f, 0, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80);
+            vertexConsumer.vertex(matrix4f, 0, translucentEnd, 0).color(0x0, 0x0, 0x0, 0);
+            vertexConsumer.vertex(matrix4f, width, translucentEnd, 0).color(0x0, 0x0, 0x0, 0);
+            vertexConsumer.vertex(matrix4f, width, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80);
+        });
     }
 
 
@@ -159,8 +160,8 @@ public class JarvisHudEditor extends Screen {
                 double offsetX = mouseX - inTopLeftSpace.x();
                 double offsetY = mouseY - inTopLeftSpace.y();
                 JarvisAnchor closestAnchor = JarvisAnchor.byQuadrant(
-                        offsetX < hud.getEffectiveWidth() / 2,
-                        offsetY < hud.getEffectiveHeight() / 2
+                    offsetX < hud.getEffectiveWidth() / 2,
+                    offsetY < hud.getEffectiveHeight() / 2
                 );
                 grabbedHudCoordOffset = closestAnchor.translate(JarvisAnchor.TOP_LEFT, offsetX, offsetY, hud.getEffectiveWidth(), hud.getEffectiveHeight());
                 grabbedAnchor = closestAnchor;
@@ -188,10 +189,10 @@ public class JarvisHudEditor extends Screen {
         double y = mouseY - grabbedHudCoordOffset.y();
         Point inTopLeftSpace = grabbedAnchor.translate(JarvisAnchor.TOP_LEFT, x, y, grabbedHud.getEffectiveWidth(), grabbedHud.getEffectiveHeight());
         Point inOriginalSpace = JarvisAnchor.TOP_LEFT.translate(grabbedHud.getAnchor(),
-                JarvisUtil.coerce(inTopLeftSpace.x(), 0, client.getWindow().getScaledWidth() - grabbedHud.getEffectiveWidth()),
-                JarvisUtil.coerce(inTopLeftSpace.y(), 0, client.getWindow().getScaledHeight() - grabbedHud.getEffectiveHeight()),
-                grabbedHud.getEffectiveWidth(),
-                grabbedHud.getEffectiveHeight()
+                                                                JarvisUtil.coerce(inTopLeftSpace.x(), 0, client.getWindow().getScaledWidth() - grabbedHud.getEffectiveWidth()),
+                                                                JarvisUtil.coerce(inTopLeftSpace.y(), 0, client.getWindow().getScaledHeight() - grabbedHud.getEffectiveHeight()),
+                                                                grabbedHud.getEffectiveWidth(),
+                                                                grabbedHud.getEffectiveHeight()
         );
         grabbedHud.setX(inOriginalSpace.x() / (client.getWindow().getScaledWidth() - grabbedHud.getEffectiveWidth()));
         grabbedHud.setY(inOriginalSpace.y() / (client.getWindow().getScaledHeight() - grabbedHud.getEffectiveHeight()));

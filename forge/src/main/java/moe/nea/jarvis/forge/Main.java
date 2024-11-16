@@ -79,7 +79,8 @@ public class Main {
         Supplier<Supplier<List<JarvisPlugin>>> plugins = () -> () -> Collections.emptyList();
         try {
             Class.forName("net.fabricmc.loader.api.FabricLoader");
-            plugins = () -> ConnectorHook::getConnectedPlugins;nameGenerator = () -> ConnectorHook::getConnectedModName;
+            plugins = () -> ConnectorHook::getConnectedPlugins;
+            nameGenerator = () -> ConnectorHook::getConnectedModName;
         } catch (ClassNotFoundException e) {
         }
         jarvisContainer.plugins.addAll(plugins.get().get());
