@@ -4,6 +4,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
+import org.joml.Matrix3x2f;
 import org.joml.Vector2ic;
 
 import java.util.HashSet;
@@ -84,11 +85,11 @@ public interface JarvisHud {
         return getUnscaledHeight();
     }
 
-    default void applyTransformations(Jarvis jarvis, MatrixStack matrices) {
+    default void applyTransformations(Jarvis jarvis, Matrix3x2f matrices) {
         var position = getEffectivePosition(jarvis, new HashSet<>());
-        matrices.translate(position.x(), position.y(), 0);
+        matrices.translate(position.x(), position.y());
         if (this instanceof Scalable scalable)
-            matrices.scale(scalable.getScale(), scalable.getScale(), 1);
+            matrices.scale(scalable.getScale(), scalable.getScale());
     }
     // </editor-fold>
 }

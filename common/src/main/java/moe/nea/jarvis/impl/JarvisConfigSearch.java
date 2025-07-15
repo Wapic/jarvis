@@ -46,10 +46,10 @@ public class JarvisConfigSearch extends Screen {
         super.render(context, mouseX, mouseY, delta);
         context.fill(0, 0, width, height, 0x50000000);
         context.enableScissor(0, 35, width, height);
-        context.getMatrices().push();
+        context.getMatrices().pushMatrix();
 
         int left = width / 2 - searchFieldWidth / 2;
-        context.getMatrices().translate(left, 35 - scroll, 0);
+        context.getMatrices().translate(left, 35F - (float) scroll);
         mouseY -= 35 - scroll;
         mouseX -= left;
         for (ConfigOptionWithCustody filteredOption : filteredOptions) {
@@ -66,10 +66,10 @@ public class JarvisConfigSearch extends Screen {
                 offset += 10;
             }
             mouseY -= height;
-            context.getMatrices().translate(0, height, 0);
+            context.getMatrices().translate(0, height);
         }
 
-        context.getMatrices().pop();
+        context.getMatrices().popMatrix();
         context.disableScissor();
     }
 

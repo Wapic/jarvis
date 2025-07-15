@@ -6,11 +6,8 @@ import moe.nea.jarvis.api.JarvisPlugin;
 import moe.nea.jarvis.api.Point;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.render.RenderLayer;
-import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import org.joml.Matrix4f;
 import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
@@ -61,7 +58,7 @@ public class JarvisHudEditor extends Screen {
 
         boolean hasHoveredAny = grabbedHud != null;
         for (JarvisHud hud : huds) {
-            context.getMatrices().push();
+            context.getMatrices().pushMatrix();
             hud.applyTransformations(this.container, context.getMatrices());
             boolean hovered = grabbedHud == hud;
             if (!hasHoveredAny && isOverlayHovered(hud, mouseX, mouseY)) {
@@ -75,7 +72,7 @@ public class JarvisHudEditor extends Screen {
                 hoverInterpolator.lerp(new Color(0xFF343738, true), new Color(0xFF85858A, true)).getRGB()
             );
             context.drawCenteredTextWithShadow(client.textRenderer, hud.getLabel(), hud.getEffectiveWidth() / 2, hud.getEffectiveHeight() / 2, -1);
-            context.getMatrices().pop();
+            context.getMatrices().popMatrix();
         }
 
         if (JarvisUtil.isTest) {
@@ -87,24 +84,7 @@ public class JarvisHudEditor extends Screen {
     }
 
     public void fillFadeOut(DrawContext drawContext, int width, int height, float opaquePercentage) {
-        if (opaquePercentage >= 1F) {
-            drawContext.fill(0, 0, width, height, 0x80000000);
-            return;
-        }
-        drawContext.draw(vertexConsumerProvider -> {
-            VertexConsumer vertexConsumer = vertexConsumerProvider.getBuffer(RenderLayer.getGui());
-            float translucentStart = opaquePercentage * height;
-            float translucentEnd = height;
-            Matrix4f matrix4f = drawContext.getMatrices().peek().getPositionMatrix();
-            vertexConsumer.vertex(matrix4f, 0, 0, 0).color(0x0, 0x0, 0x0, 0x80);
-            vertexConsumer.vertex(matrix4f, 0, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80);
-            vertexConsumer.vertex(matrix4f, width, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80);
-            vertexConsumer.vertex(matrix4f, width, 0, 0).color(0x0, 0x0, 0x0, 0x80);
-            vertexConsumer.vertex(matrix4f, 0, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80);
-            vertexConsumer.vertex(matrix4f, 0, translucentEnd, 0).color(0x0, 0x0, 0x0, 0);
-            vertexConsumer.vertex(matrix4f, width, translucentEnd, 0).color(0x0, 0x0, 0x0, 0);
-            vertexConsumer.vertex(matrix4f, width, translucentStart, 0).color(0x0, 0x0, 0x0, 0x80);
-        });
+        drawContext.fill(0, 0, width, height, 0x80000000);
     }
 
 
