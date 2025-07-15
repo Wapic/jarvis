@@ -76,7 +76,7 @@ public class Main {
     }
 
     public void onComplete(FMLLoadCompleteEvent event) {
-        Supplier<Supplier<List<JarvisPlugin>>> plugins = () -> () -> Collections.emptyList();
+        Supplier<Supplier<List<JarvisPlugin>>> plugins = () -> Collections::emptyList;
         try {
             Class.forName("net.fabricmc.loader.api.FabricLoader");
             plugins = () -> ConnectorHook::getConnectedPlugins;

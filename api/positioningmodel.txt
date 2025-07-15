@@ -1,0 +1,9 @@
+a corner is one of the 4 real corners or the middle of one of the 4 edges of a hud.
+
+a hud may or may not be scalable.
+
+a hud must have an id.
+
+a hud can be positioned either:
+    - by anchoring one corner to the corner of another hud.
+    - by anchoring the top left corner to an x y pixel position, relative to the top left of the screen

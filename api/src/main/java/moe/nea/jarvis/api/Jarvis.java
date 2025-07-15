@@ -1,9 +1,13 @@
 package moe.nea.jarvis.api;
 
 import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Unmodifiable;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.function.BiPredicate;
 import java.util.stream.Stream;
 
@@ -16,6 +20,15 @@ public abstract class Jarvis {
      * @return a stream of all plugins registered with jarvis
      */
     public abstract @NotNull Stream<@NotNull JarvisPlugin> getAllPlugins();
+
+    /**
+     * @return an index of all jarvis HUDs
+     */
+    public abstract @Unmodifiable @NotNull Map<@NotNull Identifier, @NotNull JarvisHud> getIndexedHuds();
+
+    public @NotNull Optional<@NotNull JarvisHud> getHud(@NotNull Identifier id) {
+        return Optional.ofNullable(getIndexedHuds().get(id));
+    }
 
     /**
      * @return a stream of all HUDs registered by all plugins
@@ -37,8 +50,8 @@ public abstract class Jarvis {
     public abstract Screen getHudEditor(Screen lastScreen, List<JarvisHud> hudList);
 
     /**
-     * @see  #getHudEditor(Screen)
      * @param hudFilter filter the HUDs returned by {@link #getAllHuds()} before displaying them.
+     * @see #getHudEditor(Screen)
      */
     public abstract Screen getHudEditor(Screen lastScreen, BiPredicate<JarvisPlugin, JarvisHud> hudFilter);
 

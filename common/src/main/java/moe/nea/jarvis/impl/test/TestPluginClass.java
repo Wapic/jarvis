@@ -1,12 +1,18 @@
 package moe.nea.jarvis.impl.test;
 
-import moe.nea.jarvis.api.*;
+import moe.nea.jarvis.api.JarvisConfigOption;
+import moe.nea.jarvis.api.JarvisConstants;
+import moe.nea.jarvis.api.JarvisHud;
+import moe.nea.jarvis.api.JarvisPlugin;
 import moe.nea.jarvis.impl.JarvisUtil;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Text;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+import org.joml.Vector2i;
+import org.joml.Vector2ic;
 
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +20,7 @@ import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class TestPluginClass implements JarvisPlugin {
-    JarvisHud hud = new JarvisScalable() {
+    JarvisHud hud = new JarvisHud.Scalable() {
         @Override
         public float getScale() {
             return (float) JarvisUtil.coerce(scale, 0.1F, 10F);
@@ -26,28 +32,7 @@ public class TestPluginClass implements JarvisPlugin {
         }
 
         float scale = 1F;
-        double x;
-        double y;
-
-        @Override
-        public double getX() {
-            return x;
-        }
-
-        @Override
-        public void setX(double newX) {
-            x = newX;
-        }
-
-        @Override
-        public double getY() {
-            return y;
-        }
-
-        @Override
-        public void setY(double newY) {
-            y = newY;
-        }
+        Vector2i position = new Vector2i();
 
         @Override
         public @NotNull Text getLabel() {
@@ -55,23 +40,38 @@ public class TestPluginClass implements JarvisPlugin {
         }
 
         @Override
-        public int getContentHeight() {
-            return 10000;
+        public @NotNull Identifier getHudId() {
+            return Identifier.of(JarvisConstants.MODID, "test_hud");
         }
 
         @Override
-        public int getWidth() {
-            return 200;
+        public @NotNull Vector2ic getPosition() {
+            return position;
         }
 
         @Override
-        public int getHeight() {
-            return 300;
+        public void setPosition(Vector2ic position) {
+            this.position = new Vector2i(position);
         }
 
         @Override
         public boolean isEnabled() {
             return true;
+        }
+
+        @Override
+        public boolean isVisible() {
+            return true;
+        }
+
+        @Override
+        public int getUnscaledWidth() {
+            return 200;
+        }
+
+        @Override
+        public int getUnscaledHeight() {
+            return 300;
         }
     };
 
@@ -106,43 +106,43 @@ public class TestPluginClass implements JarvisPlugin {
     @Override
     public @NotNull List<@NotNull JarvisConfigOption> getAllConfigOptions() {
         return Arrays.asList(
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Test", "Description Test"),
-                ofOption("Alpha", "Description Alpha"),
-                ofOption("Beta", "Description Beta"),
-                ofOption("Gamma", "Description Gamme", "1", "3", "2")
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Test", "Description Test"),
+            ofOption("Alpha", "Description Alpha"),
+            ofOption("Beta", "Description Beta"),
+            ofOption("Gamma", "Description Gamme", "1", "3", "2")
         );
     }
 
     @Override
     public @NotNull List<@NotNull JarvisHud> getAllHuds() {
-        return Arrays.asList(hud);
+        return List.of(hud);
     }
 
     @Override
