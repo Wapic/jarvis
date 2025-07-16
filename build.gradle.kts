@@ -93,7 +93,7 @@ subprojects {
                         licenses {
                             license {
                                 name.set("LGPL-3.0 or later")
-                                url.set("https://github.com/romangraef/jarvis/blob/HEAD/.licensesnip")
+                                url.set("https://github.com/nea89o/jarvis/blob/HEAD/.licensesnip")
                             }
                         }
                         developers {
@@ -107,11 +107,11 @@ subprojects {
                         description.set("Jarvis Common Config Interface is a search engine and hud editor allowing you to edit all your minecraft mods config options and HUDs in one place")
                         inceptionYear.set("2023")
                         issueManagement {
-                            url.set("https://github.com/romangraef/jarvis/issues")
+                            url.set("https://github.com/nea89o/jarvis/issues")
                             system.set("Github Issues")
                         }
                         scm {
-                            url.set("https://github.com/romangraef/jarvis")
+                            url.set("https://github.com/nea89o/jarvis")
                         }
                     }
                 }
