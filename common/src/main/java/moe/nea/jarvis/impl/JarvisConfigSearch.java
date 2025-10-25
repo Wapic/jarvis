@@ -1,10 +1,14 @@
 package moe.nea.jarvis.impl;
 
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.input.CharInput;
+import net.minecraft.client.input.KeyInput;
 import net.minecraft.text.Text;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
@@ -101,10 +105,12 @@ public class JarvisConfigSearch extends Screen {
     }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
+    public boolean mouseClicked(Click click, boolean doubled) {
         assert client != null;
-        if (super.mouseClicked(mouseX, mouseY, button)) return true;
-        mouseY -= 35 - scroll;
+        if (super.mouseClicked(click, doubled)) return true;
+        double mouseX = click.x();
+        double mouseY = click.y();
+        mouseX -= 35 - scroll;
         int left = width / 2 - searchFieldWidth / 2;
         mouseX -= left;
         for (ConfigOptionWithCustody filteredOption : filteredOptions) {
@@ -120,10 +126,10 @@ public class JarvisConfigSearch extends Screen {
     }
 
     @Override
-    public boolean charTyped(char chr, int modifiers) {
+    public boolean charTyped(CharInput input) {
         String before = searchField.getText();
         searchField.setFocused(true);
-        boolean ret = super.charTyped(chr, modifiers);
+        boolean ret = super.charTyped(input);
         String after = searchField.getText();
         if (!Objects.equals(before, after)) {
             updateSearchResults(after);
@@ -132,9 +138,9 @@ public class JarvisConfigSearch extends Screen {
     }
 
     @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
+    public boolean keyPressed(KeyInput input) {
         String before = searchField.getText();
-        boolean ret = super.keyPressed(keyCode, scanCode, modifiers);
+        boolean ret = super.keyPressed(input);
         String after = searchField.getText();
         if (!Objects.equals(before, after)) {
             updateSearchResults(after);

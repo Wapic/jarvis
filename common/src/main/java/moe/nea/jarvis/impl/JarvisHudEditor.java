@@ -4,6 +4,8 @@ import moe.nea.jarvis.api.JarvisAnchor;
 import moe.nea.jarvis.api.JarvisHud;
 import moe.nea.jarvis.api.JarvisPlugin;
 import moe.nea.jarvis.api.Point;
+import net.minecraft.client.gl.RenderPipelines;
+import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.text.Style;
@@ -68,7 +70,7 @@ public class JarvisHudEditor extends Screen {
             BinaryInterpolator hoverInterpolator = hoverProgress.get(hud);
             hoverInterpolator.lerpTo(hovered ? 1 : 0);
             fillFadeOut(context, hud.getEffectiveWidth(), hud.getEffectiveHeight(), 1F);
-            context.drawBorder(0, 0, hud.getEffectiveWidth(), hud.getEffectiveHeight(),
+            fillOutline(context, hud.getEffectiveWidth(), hud.getEffectiveHeight(),
                 hoverInterpolator.lerp(new Color(0xFF343738, true), new Color(0xFF85858A, true)).getRGB()
             );
             context.drawCenteredTextWithShadow(client.textRenderer, hud.getLabel(), hud.getEffectiveWidth() / 2, hud.getEffectiveHeight() / 2, -1);
@@ -87,41 +89,47 @@ public class JarvisHudEditor extends Screen {
         drawContext.fill(0, 0, width, height, 0x80000000);
     }
 
+    public void fillOutline(DrawContext drawContext, int width, int height, int color) {
+        drawContext.fill(0, 0, width, 1, color);
+        drawContext.fill(0, height - 1, width, height, color);
+        drawContext.fill(0, 1, 1, height - 1, color);
+        drawContext.fill(width - 1, 1, width, height - 1, color);
+    }
 
     @Override
-    public boolean mouseClicked(double mouseX, double mouseY, int button) {
-        if (button == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
+    public boolean mouseClicked(Click click, boolean doubled) {
+        if (click.button() == GLFW.GLFW_MOUSE_BUTTON_LEFT) {
             if (grabbedHud != null)
                 return false;
             isScaling = false;
-            tryGrabOverlay(mouseX, mouseY);
+            tryGrabOverlay(click.x(), click.y());
             return true;
         }
-        if (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
+        if (click.button() == GLFW.GLFW_MOUSE_BUTTON_RIGHT) {
             if (grabbedHud != null)
                 return false;
             isScaling = true;
-            tryGrabOverlay(mouseX, mouseY);
+            tryGrabOverlay(click.x(), click.y());
             if (!(grabbedHud instanceof JarvisHud.Scalable scalable)) {
                 tryReleaseOverlay();
                 return false;
             }
             JarvisAnchor opposite = grabbedAnchor.getOpposite();
-            scalePerDistance = scalable.getScale() / oppositeCorner.distanceTo(new Point(mouseX, mouseY));
+            scalePerDistance = scalable.getScale() / oppositeCorner.distanceTo(new Point(click.x(), click.y()));
             System.out.printf("Scaling in relation to %s (%s). Scale per distance: %.5f%n", opposite, oppositeCorner, scalePerDistance);
             return true;
         }
-        return super.mouseClicked(mouseX, mouseY, button);
+        return super.mouseClicked(click, doubled);
     }
 
     @Override
-    public boolean mouseReleased(double mouseX, double mouseY, int button) {
-        if ((button == GLFW.GLFW_MOUSE_BUTTON_LEFT && !isScaling)
-            || (button == GLFW.GLFW_MOUSE_BUTTON_RIGHT && isScaling)) {
+    public boolean mouseReleased(Click click) {
+        if ((click.button() == GLFW.GLFW_MOUSE_BUTTON_LEFT && !isScaling)
+            || (click.button() == GLFW.GLFW_MOUSE_BUTTON_RIGHT && isScaling)) {
             tryReleaseOverlay();
             return true;
         }
-        return super.mouseReleased(mouseX, mouseY, button);
+        return super.mouseReleased(click);
     }
 
     @Override

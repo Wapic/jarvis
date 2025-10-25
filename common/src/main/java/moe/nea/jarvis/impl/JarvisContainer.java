@@ -27,7 +27,7 @@ import java.util.stream.Stream;
 public class JarvisContainer extends Jarvis {
     public List<JarvisPlugin> plugins = new ArrayList<>();
     public LoaderSupport loaderSupport;
-    public KeyBinding hudKeyBinding = new KeyBinding("key.jarvis.open-gui-editor", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_SHIFT, "key.jarvis");
+    public KeyBinding hudKeyBinding = new KeyBinding("key.category.jarvis.open-gui-editor", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_RIGHT_SHIFT, KeyBinding.Category.create(Identifier.of("jarvis:jarvis")));
 
     public LoaderSupport getLoaderSupport() {
         return loaderSupport;

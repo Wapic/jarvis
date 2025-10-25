@@ -1,6 +1,5 @@
 package moe.nea.jarvis.api;
 
-import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.NotNull;

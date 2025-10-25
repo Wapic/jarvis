@@ -5,5 +5,5 @@ import net.minecraft.text.Text;
 import java.util.Optional;
 
 public interface LoaderSupport {
-    Optional<Text> getModName(String modid);
+    Optional<Text> getModName(String modId);
 }

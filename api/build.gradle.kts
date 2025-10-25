@@ -1,6 +1,6 @@
 val enabled_platforms: String by rootProject
 architectury {
-    common(enabled_platforms.split(","))
+    common(enabled_platforms)
 }
 
 val fabric_loader_version: String by rootProject

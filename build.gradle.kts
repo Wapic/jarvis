@@ -2,7 +2,7 @@ import net.fabricmc.loom.api.LoomGradleExtensionAPI
 
 plugins {
     id("architectury-plugin") version "3.4-SNAPSHOT"
-    id("dev.architectury.loom") version "1.10-SNAPSHOT" apply false
+    id("dev.architectury.loom") version "1.11-SNAPSHOT" apply false
     `maven-publish`
 }
 
@@ -75,7 +75,7 @@ allprojects {
 
     tasks.withType<JavaCompile> {
         options.encoding = "UTF-8"
-        options.release.set(17)
+        options.release.set(21)
     }
 
     configure<JavaPluginExtension> {
