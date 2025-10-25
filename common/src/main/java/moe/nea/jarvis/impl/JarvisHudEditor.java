@@ -4,7 +4,6 @@ import moe.nea.jarvis.api.JarvisAnchor;
 import moe.nea.jarvis.api.JarvisHud;
 import moe.nea.jarvis.api.JarvisPlugin;
 import moe.nea.jarvis.api.Point;
-import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.Click;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.Screen;
@@ -69,8 +68,7 @@ public class JarvisHudEditor extends Screen {
             }
             BinaryInterpolator hoverInterpolator = hoverProgress.get(hud);
             hoverInterpolator.lerpTo(hovered ? 1 : 0);
-            fillFadeOut(context, hud.getEffectiveWidth(), hud.getEffectiveHeight(), 1F);
-            fillOutline(context, hud.getEffectiveWidth(), hud.getEffectiveHeight(),
+            fillWithOutline(context, hud.getEffectiveWidth(), hud.getEffectiveHeight(),
                 hoverInterpolator.lerp(new Color(0xFF343738, true), new Color(0xFF85858A, true)).getRGB()
             );
             context.drawCenteredTextWithShadow(client.textRenderer, hud.getLabel(), hud.getEffectiveWidth() / 2, hud.getEffectiveHeight() / 2, -1);
@@ -85,11 +83,8 @@ public class JarvisHudEditor extends Screen {
         }
     }
 
-    public void fillFadeOut(DrawContext drawContext, int width, int height, float opaquePercentage) {
+    public void fillWithOutline(DrawContext drawContext, int width, int height, int color) {
         drawContext.fill(0, 0, width, height, 0x80000000);
-    }
-
-    public void fillOutline(DrawContext drawContext, int width, int height, int color) {
         drawContext.fill(0, 0, width, 1, color);
         drawContext.fill(0, height - 1, width, height, color);
         drawContext.fill(0, 1, 1, height - 1, color);

@@ -29,8 +29,6 @@ public class Main implements ClientModInitializer {
         if (!JarvisUtil.isTest)
             container.plugins.removeIf(it -> it instanceof TestPluginClass);
         container.finishLoading();
-        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            container.registerCommands(dispatcher);
-        });
+        ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> container.registerCommands(dispatcher));
     }
 }
