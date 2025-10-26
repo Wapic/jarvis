@@ -68,10 +68,10 @@ public class JarvisHudEditor extends Screen {
             }
             BinaryInterpolator hoverInterpolator = hoverProgress.get(hud);
             hoverInterpolator.lerpTo(hovered ? 1 : 0);
-            fillWithOutline(context, hud.getEffectiveWidth(), hud.getEffectiveHeight(),
+            fillWithOutline(context, hud.getUnscaledWidth(), hud.getUnscaledHeight(),
                 hoverInterpolator.lerp(new Color(0xFF343738, true), new Color(0xFF85858A, true)).getRGB()
             );
-            context.drawCenteredTextWithShadow(client.textRenderer, hud.getLabel(), hud.getEffectiveWidth() / 2, hud.getEffectiveHeight() / 2, -1);
+            context.drawCenteredTextWithShadow(client.textRenderer, hud.getLabel(), hud.getUnscaledWidth() / 2, hud.getUnscaledHeight() / 2, -1);
             context.getMatrices().popMatrix();
         }
 
@@ -151,8 +151,8 @@ public class JarvisHudEditor extends Screen {
                 double offsetX = mouseX - inTopLeftSpace.x();
                 double offsetY = mouseY - inTopLeftSpace.y();
                 JarvisAnchor closestAnchor = JarvisAnchor.byQuadrant(
-                    offsetX < hud.getEffectiveWidth() / 2,
-                    offsetY < hud.getEffectiveHeight() / 2
+                    offsetX < hud.getEffectiveWidth() / 2.0,
+                    offsetY < hud.getEffectiveHeight() / 2.0
                 );
                 grabbedHudTopLeftCoordOffset = new Point(offsetX, offsetY);
                 oppositeCorner = JarvisAnchor.TOP_LEFT.translate(closestAnchor.getOpposite(), inTopLeftSpace.x(), inTopLeftSpace.y(), hud.getEffectiveWidth(), hud.getEffectiveHeight());
